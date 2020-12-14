@@ -4,7 +4,7 @@ const Canvas = require('canvas');
 const client = new Discord.Client();
 const console = require("./theme.js");
 const { prefix, token } = require('./configs/config.json');
-
+const messageEmbed= new Discord.MessageEmbed();
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
@@ -109,7 +109,9 @@ client.on('message', message => {
         client.commands.get(command).execute(message, args);
     } catch (error) {
         console.error(error);
-        message.reply('there was an error trying to execute that command!');
+        messageEmbed.setTitle("there was an error trying to execute that command!")
+                    .setColor('RED');
+        message.reply(messageEmbed);
     }
 });
 

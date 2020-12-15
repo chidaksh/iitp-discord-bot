@@ -98,7 +98,9 @@ client.on('message', message => {
     const command = args.shift().toLowerCase();
 
     if (message.channel.type === 'dm' || message.channel.name !== 'testing') {
-        message.reply('Hello there');
+        messageEmbed.setTitle("Hello there")
+                    .setColor('AQUA');
+        message.reply(messageEmbed);
         return;
     }
 

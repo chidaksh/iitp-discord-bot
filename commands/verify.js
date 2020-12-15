@@ -4,17 +4,18 @@ const {
 	spreadsheetId,
 	sheetName,
 } = require('../services/googleSheetsService.js');
-
-
-
+const Discord = require('discord.js');
+const messageEmbed= new Discord.MessageEmbed();
 async function assignRole(branch, gradYear, message) {
 	let { cache } = message.guild.roles;
 	let modRole = cache.find(role => role.name === "moderator");
 
 	let yearRole = cache.find(role => role.name.includes(gradYear));
 	if (!yearRole) {
-		message.reply("Year role could not be assigned. \
+		messageEmbed.setTitle("Year role could not be assigned. \
 			Please ping"+ "<@&" + modRole.id + "> to identify you.")
+					.setColor('RED');
+		message.reply(messageEmbed);
 	}
 	else {
 		await message.member.roles.add(yearRole);
@@ -23,8 +24,10 @@ async function assignRole(branch, gradYear, message) {
 
 	let branchRole = cache.find(role => role.name.includes(branch));
 	if (!branchRole) {
-		message.reply("Branch role could not be assigned. \
+		messageEmbed.setTitle("Branch role could not be assigned. \
 		Please ping"+ "<@&" + modRole.id + "> to identify you.")
+					.setColor('RED');
+		message.reply(messageEmbed);
 	}
 	else {
 		await message.member.roles.add(branchRole);
@@ -77,8 +80,10 @@ async function getDetails(message, username) {
 				if (message.author.id === message.guild.ownerID) return message.reply('I can\'t change your nickname.');
 
 				await message.member.setNickname(`${username}-${part[0]} ${lastName}`);
-				messageString += "Nickname Changed\n"
-				message.reply(messageString)
+				messageString += "Nickname Changed\n";
+				messageEmbed.setTitle(messageString)
+							.setColor('GOLD');
+				message.reply(messageEmbed);
 			} catch (err) {
 				console.error(err);
 			}
@@ -86,7 +91,9 @@ async function getDetails(message, username) {
 			return;
 		}
 	}
-	message.reply("User not found");
+	messageEmbed.setTitle("User not found")
+				.setColor('RED');
+	message.reply(messageEmbed);
 	return;
 }
 
@@ -100,7 +107,9 @@ module.exports = {
 			getDetails(message, username);
 		}
 		else {
-			message.reply("The command you are looking for is-!verify me");
+			messageEmbed.setTitle("The command you are looking for is-!verify me")
+						.setColor('YELLOW');
+			message.reply(messageEmbed);
 		}
 	}
 }

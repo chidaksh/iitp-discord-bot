@@ -4,7 +4,8 @@ const {
 	spreadsheetId,
 	sheetName,
 } = require('../services/googleSheetsService.js');
-
+const Discord = require('discord.js');
+const messageEmbed= new Discord.MessageEmbed();
 // Id of the spreadsheet file (it is in the url of the google sheet)
 const logThemes = require("../theme.js");
 
@@ -58,15 +59,18 @@ async function getDetails(message) {
 			} else if (house === 'D') {
 				house = 'Darco';
 			}
-
-			message.channel.send(`Your Name is ${realName}\nYour Roll No is ${rollNumber}\nYour house is ${house}`);
+			messageEmbed.setTitle(`Your Name is ${realName}\nYour Roll No is ${rollNumber}\nYour house is ${house}`)
+						.setColor('ORANGE');
+			message.channel.send(messageEmbed);
 			// TODO Do not print the roll number
 			// TODO Assign a role based on the roll number like give `role-a` if rollNumber starts with 1901
 			return;
 		}
 	};
-	message.reply("Sorry we couldn't find you in our database. \
+	messageEmbed.setTitle("Sorry we couldn't find you in our database. \
 	Please ping"+ "<@&" + modRole.id + "> to identify you.")
+				.setColor('RED');
+	message.reply(messageEmbed);
 	return;
 }
 
@@ -80,7 +84,9 @@ module.exports = {
 		// If someone runs !user-info @dhushyanth in the message
 		// then identify the mentioned user and fetch the
 		// roll number of that user
-		message.channel.send(`Your username: ${userName}\n`);
+		messageEmbed.setTitle(`Your username: ${userName}\n`)
+					.setColor('GREEN');
+		message.channel.send(messageEmbed);
 		getDetails(message);
 		// var role = message.guild.roles.find(role => role.name === "role-b");
 		// message.member.addRole(role);

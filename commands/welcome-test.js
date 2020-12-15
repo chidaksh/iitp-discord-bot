@@ -1,5 +1,6 @@
 const Canvas = require('canvas');
 const Discord = require('discord.js');
+const messageEmbed= new Discord.MessageEmbed();
 
 // Pass the entire Canvas object because you'll need to access its width, as well its context
 const applyText = (canvas, text) => {
@@ -61,6 +62,7 @@ module.exports = {
         ctx.drawImage(avatar, (0.5 + (canvas.width / 2 - 100)) | 0, (0.5 + 50) | 0, 200, 200);
 
         const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'welcome-image.png');
-        message.channel.send(attachment);
+        messageEmbed.attachFiles([attachment]);
+        message.channel.send(messageEmbed);
     },
 };
